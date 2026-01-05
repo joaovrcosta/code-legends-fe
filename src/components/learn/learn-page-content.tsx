@@ -32,7 +32,6 @@ export function LearnPageContent({
   const [modulesProgress, setModulesProgress] = useState<ModuleWithProgress[]>(
     []
   );
-  const [isUnlocking, setIsUnlocking] = useState(false);
   const taskRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
   const prevOpenPopoverRef = useRef<number | null>(null);
   const prevIsModalOpenRef = useRef<boolean>(false);
@@ -68,20 +67,26 @@ export function LearnPageContent({
     }
   }, [currentActiveCourse?.id]);
 
-  // Função para buscar os módulos com progresso
   const fetchModulesProgress = useCallback(async () => {
     if (!currentActiveCourse?.slug) return;
-
+  
     try {
-      const modulesData = await listModulesProgress(currentActiveCourse.slug);
+      const currentModuleId = roadmap?.course?.currentModuleId; 
+      const modulesData = await listModulesProgress(
+        currentActiveCourse.slug,
+        currentModuleId
+      );
 
+      console.log("modulesData", modulesData)
+      
       if (modulesData?.modules) {
         setModulesProgress(modulesData.modules);
       }
     } catch (error) {
       console.error("Erro ao buscar módulos com progresso:", error);
     }
-  }, [currentActiveCourse?.slug]);
+  }, [currentActiveCourse?.slug, roadmap?.course?.currentModuleId]);
+
 
   // Coleta todas as lições de todos os módulos e grupos
   const allLessons = useMemo(() => {
@@ -118,8 +123,6 @@ export function LearnPageContent({
   // Usa currentModule e currentClass diretamente do backend
   const currentModule = roadmap?.course.currentModule ?? 1;
   const currentClass = roadmap?.course.currentClass ?? 1;
-
-  console.log(currentModule)
 
   // Encontra o título da lição atual (memoizado)
   const currentLessonTitle = useMemo(() => {
@@ -440,8 +443,6 @@ export function LearnPageContent({
 
   const handleUnlockNext = async () => {
     if (!nextLockedModule || !currentActiveCourse?.id) return;
-
-    setIsUnlocking(true);
     try {
       const result = await unlockNextModule(currentActiveCourse.id);
       if (result.success) {
@@ -456,8 +457,6 @@ export function LearnPageContent({
     } catch (error) {
       console.error("Erro ao desbloquear módulo:", error);
       alert("Erro ao desbloquear módulo");
-    } finally {
-      setIsUnlocking(false);
     }
   };
 
@@ -473,8 +472,6 @@ export function LearnPageContent({
       </div>
     );
   }
-
-  console.log(nextLockedModule?.locked ? "Bloqueado" : "Desbloqueado")
 
   return (
     <div className="flex items-center justify-center w-full">

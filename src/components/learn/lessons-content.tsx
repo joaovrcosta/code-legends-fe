@@ -47,7 +47,7 @@ export function LessonsContent({
   // Encontra o próximo módulo (se houver) para mostrar como bloqueado
   // currentModuleNumber é 1-based, então o próximo módulo está no índice currentModuleNumber (0-based)
   const nextModuleIndex = currentModuleNumber;
-  const nextModule = roadmap?.modules?.[nextModuleIndex];
+  const _nextModule = roadmap?.modules?.[nextModuleIndex];
 
   return (
     <div className="lg:pb-14 pb-0 w-full lg:mt-0 md:mt-0 mt-40">

@@ -15,7 +15,7 @@ import { findLessonContext, generateLessonUrl } from "@/utils/lesson-url";
 import { useRouter } from "next/navigation";
 
 export function LessonsAccordion() {
-  const { currentLesson, lessons } = useCourseModalStore();
+  const { currentLesson } = useCourseModalStore();
   const { activeCourse } = useActiveCourseStore();
   const [roadmap, setRoadmap] = useState<RoadmapResponse | null>(null);
   const router = useRouter();

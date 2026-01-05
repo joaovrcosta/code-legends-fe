@@ -49,6 +49,7 @@ export type CourseRoadmap = {
   currentModule?: number;
   currentClass?: number;
   nextModule?: number;
+  currentModuleId?: string;
   totalModules?: number;
   canUnlockNextModule?: boolean;
   isLastLessonCompleted?: boolean;
