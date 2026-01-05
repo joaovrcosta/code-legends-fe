@@ -35,10 +35,7 @@ export default function DynamicLessonPage() {
   
   // Ref para evitar loop infinito no useEffect de atualização do roadmap
   const lessonDataRef = useRef<LessonResponse | null>(null);
-
-  // console.log(canUnlockNextModule)
   
-  // Atualiza o ref sempre que lessonData mudar
   useEffect(() => {
     lessonDataRef.current = lessonData;
   }, [lessonData]);

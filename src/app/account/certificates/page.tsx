@@ -14,8 +14,6 @@ export default async function AccountCertificatesPage() {
   const completedCourses = await getCompletedCourses();
   const completedCoursesList = completedCourses.courses || [];
 
-  console.log(certificates);
-
   return (
     <div className="space-y-4 mt-9">
       <Card className="bg-[#121214] border-[#25252a] lg:p-10 p-4">

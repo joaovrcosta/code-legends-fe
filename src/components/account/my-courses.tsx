@@ -9,9 +9,7 @@ export async function MyCourses() {
   const completedCourses = await getCompletedCourses();
 
   const completedCoursesList = completedCourses.courses || [];
-
-  console.log(completedCoursesList);
-
+  
   return (
     <Card className="bg-[#121214] border-[#25252a] lg:p-10 py-4 px-2">
       <CardHeader className="px-4">

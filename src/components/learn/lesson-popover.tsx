@@ -71,6 +71,8 @@ export const LessonPopover = ({
   // O glow só deve aparecer na lição atual
   const shouldShowShadow = lesson.isCurrent;
 
+  console.log("lesson", lesson)
+
   return (
     <div>
       {showContinue && !isModalOpen ? (

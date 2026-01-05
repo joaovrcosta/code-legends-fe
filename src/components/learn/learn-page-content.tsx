@@ -76,8 +76,6 @@ export function LearnPageContent({
         currentActiveCourse.slug,
         currentModuleId
       );
-
-      console.log("modulesData", modulesData)
       
       if (modulesData?.modules) {
         setModulesProgress(modulesData.modules);
