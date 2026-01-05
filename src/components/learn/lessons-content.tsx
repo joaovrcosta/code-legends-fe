@@ -1,8 +1,6 @@
 "use client";
 
-import { PrimaryButton } from "@/components/ui/primary-button";
 import DividerWithText from "@/components/divider-with-text";
-import { Lock } from "@phosphor-icons/react/dist/ssr";
 import type { RoadmapResponse } from "@/types/roadmap";
 import type { ActiveCourse } from "@/types/user-course.ts";
 import { LessonPopover } from "@/components/learn/lesson-popover";
@@ -123,8 +121,7 @@ export function LessonsContent({
                 </div>
               )
           )}
-          {/* Mostra seção bloqueada se o módulo atual não estiver completo e houver próximo módulo */}
-          {nextModule &&
+          {/* {nextModule &&
             !currentModuleToDisplay.isCompleted && (
               <div className="w-full flex items-center justify-center mt-12">
                 <section className="flex items-center justify-center p-8 border border-[#25252A] rounded-[20px] flex-col space-y-3 max-w-[384px] w-full">
@@ -139,7 +136,7 @@ export function LessonsContent({
                   </PrimaryButton>
                 </section>
               </div>
-            )}
+            )} */}
         </div>
       </section>
     </div>

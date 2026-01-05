@@ -119,6 +119,8 @@ export function LearnPageContent({
   const currentModule = roadmap?.course.currentModule ?? 1;
   const currentClass = roadmap?.course.currentClass ?? 1;
 
+  console.log(currentModule)
+
   // Encontra o título da lição atual (memoizado)
   const currentLessonTitle = useMemo(() => {
     if (!roadmap?.modules) return "Selecione uma aula";
@@ -472,6 +474,8 @@ export function LearnPageContent({
     );
   }
 
+  console.log(nextLockedModule?.locked ? "Bloqueado" : "Desbloqueado")
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full space-y-4">
@@ -495,9 +499,15 @@ export function LearnPageContent({
             allLessons={allLessons}
             taskRefs={taskRefs}
           />
-          <div className="flex items-center justify-between flex-col border border-[#25252A] lg:border-b-[1px] lg:border-r-[1px] lg:border-l-[1px] border-l-0 border-r-0 border-b-0 lg:rounded-lg rounded-none p-8 w-full max-w-[412px]">
+          <div className="flex items-center justify-between flex-col border border-[#25252A] lg:border-b-[1px] lg:border-r-[1px] lg:border-l-[1px] border-l-0 border-r-0 border-b-0 lg:rounded-[20px] rounded-none p-8 w-full max-w-[412px]">
             <div className="flex items-center justify-between p-2 bg-[#1a1a1e] rounded-lg mb-4">
-              <span className="text-xs font-bold bg-blue-gradient-500 bg-clip-text text-transparent bg-[#1a1a1e]">
+              <span
+                className={
+                  nextLockedModule?.canUnlock
+                    ? "text-xs font-bold bg-blue-gradient-500 bg-clip-text text-transparent bg-[#1a1a1e]"
+                    : "text-xs font-bold text-zinc-500"
+                }
+              >
                 {nextLockedModule ? "A SEGUIR" : "CERTIFICADO"}
               </span>
             </div>
@@ -508,15 +518,12 @@ export function LearnPageContent({
                     <Lock size={24} weight="fill" />
                     <p>{nextLockedModule.title}</p>
                   </div>
-                  {/* <h3 className="text-2xl text-center">
-                    {nextLockedModule.title}
-                  </h3> */}
                   <button
                     onClick={handleUnlockNext}
-                    disabled={!nextLockedModule.canUnlock}
-                    className="w-full text-center px-6 h-[48px] rounded-full border border-[#25252A] text-sm flex items-center justify-center text-white ease-linear duration-150 bg-blue-gradient-500"
+                    disabled={!nextLockedModule?.canUnlock}
+                    className="w-full text-center px-6 h-[48px] rounded-full border border-[#25252A] text-sm flex items-center justify-center text-white ease-linear duration-150 bg-blue-gradient-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:saturate-50"
                   >
-                    {isUnlocking ? "Desbloqueando..." : "Proximo módulo"}
+                    {nextLockedModule?.locked ? "Bloqueado" : "Avançar"}
                   </button>
                 </>
               ) : (
