@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import {
   getCourseRoadmap,
   listModulesProgress,
-  unlockNextModule,
+  continueNextModule,
 } from "@/actions/course";
 import { useCourseModalStore } from "@/stores/course-modal-store";
 import { useActiveCourseStore } from "@/stores/active-course-store";
@@ -441,20 +441,21 @@ export function LearnPageContent({
 
   const handleUnlockNext = async () => {
     if (!nextLockedModule || !currentActiveCourse?.id) return;
+    
     try {
-      const result = await unlockNextModule(currentActiveCourse.id);
-      if (result.success) {
+      const result = await continueNextModule(currentActiveCourse.id);
+      if (result.success && result.data) {
         // Atualiza os módulos e o roadmap
         await fetchModulesProgress();
         await fetchRoadmap();
         router.refresh();
       } else {
-        console.error("Erro ao desbloquear módulo:", result.error);
-        alert(result.error || "Erro ao desbloquear módulo");
+        console.error("Erro ao continuar para próximo módulo:", result.error);
+        alert(result.error || "Erro ao continuar para próximo módulo");
       }
     } catch (error) {
-      console.error("Erro ao desbloquear módulo:", error);
-      alert("Erro ao desbloquear módulo");
+      console.error("Erro ao continuar para próximo módulo:", error);
+      alert("Erro ao continuar para próximo módulo");
     }
   };
 
