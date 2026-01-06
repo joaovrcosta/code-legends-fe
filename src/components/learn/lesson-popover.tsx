@@ -80,7 +80,7 @@ export const LessonPopover = ({
           <PopoverTrigger asChild>
             <div
               className={`cursor-pointer w-[64px] h-[64px] rounded-full border-2 flex items-center justify-center bg-[#1a1a1e] ${
-                shouldShowShadow ? "shadow-[0_0_24px_#00C8FF]" : ""
+                showContinue ? "shadow-[0_0_24px_#00C8FF]" : ""
               }`}
               style={{
                 borderColor: completed
@@ -123,7 +123,7 @@ export const LessonPopover = ({
           <PopoverTrigger asChild>
             <div
               className={`cursor-pointer  w-[64px] h-[64px] rounded-full border-2 flex items-center justify-center bg-[#1a1a1e] ${
-                shouldShowShadow ? "shadow-[0_0_24px_#00C8FF]" : ""
+                showContinue ? "shadow-[0_0_24px_#00C8FF]" : ""
               }`}
               style={{
                 borderColor: completed

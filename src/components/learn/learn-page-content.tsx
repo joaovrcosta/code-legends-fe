@@ -76,7 +76,7 @@ export function LearnPageContent({
         currentActiveCourse.slug,
         currentModuleId
       );
-      
+
       if (modulesData?.modules) {
         setModulesProgress(modulesData.modules);
       }
@@ -510,15 +510,15 @@ export function LearnPageContent({
               {nextLockedModule ? (
                 <>
                   <div className="flex items-center text-center justify-between gap-2 text-2xl mb-4">
-                    <Lock size={24} weight="fill" />
+                    {nextLockedModule?.locked ? <Lock size={24} weight="fill" /> : ""}
                     <p>{nextLockedModule.title}</p>
                   </div>
                   <button
                     onClick={handleUnlockNext}
                     disabled={!nextLockedModule?.canUnlock}
-                    className="w-full text-center px-6 h-[48px] rounded-full border border-[#25252A] text-sm flex items-center justify-center text-white ease-linear duration-150 bg-blue-gradient-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:saturate-50"
+                    className="w-full font-semibold text-center px-6 h-[48px] rounded-full border border-[#25252A] text-sm flex items-center justify-center text-white ease-linear duration-150 bg-blue-gradient-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:saturate-50"
                   >
-                    {nextLockedModule?.locked ? "Bloqueado" : "Avançar"}
+                    {nextLockedModule?.locked ? "Bloqueado" : "Continuar"}
                   </button>
                 </>
               ) : (
