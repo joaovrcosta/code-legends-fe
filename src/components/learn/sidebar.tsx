@@ -11,9 +11,11 @@ import {
   DiscordLogo,
   CalendarDotsIcon,
   BookBookmarkIcon,
+  House,
 } from "@phosphor-icons/react/dist/ssr";
 
 const links = [
+  { name: "Dashboard", path: "/", icon: House },
   { name: "Aprender", path: "/learn", icon: Path },
   {
     name: "Meu aprendizado",
@@ -21,7 +23,6 @@ const links = [
     icon: BookBookmarkIcon,
   },
   { name: "Catálogo", path: "/learn/catalog", icon: BookOpenText },
-  // { name: "Quartel General", path: "/learn/hq", icon: Shield },
   { name: "Progresso", path: "/learn/tracking", icon: TrendUpIcon },
   { name: "Projetos", path: "/learn/projects", icon: PuzzlePiece },
   { name: "Eventos", path: "/learn/badges", icon: CalendarDotsIcon },
