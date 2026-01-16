@@ -9,7 +9,6 @@ export default async function LearnLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Busca os dados no servidor
   const [enrolledCoursesData, activeCourse] = await Promise.all([
     getUserEnrolledList(),
     getActiveCourse(),
@@ -30,8 +29,6 @@ export default async function LearnLayout({
         <div className="flex-1 h-[calc(100dvh-100px)] lg:h-[calc(100dvh-80px)] overflow-y-auto pt-0 pb-4">
           <main className="w-full">{children}</main>
           <FooterFixed />
-
-          {/* <AulaModal /> */}
         </div>
       </div>
     </div>
