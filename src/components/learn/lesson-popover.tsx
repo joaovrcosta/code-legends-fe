@@ -69,7 +69,7 @@ export const LessonPopover = ({
   };
 
   // O glow só deve aparecer na lição atual
-  const shouldShowShadow = lesson.isCurrent;
+  // const shouldShowShadow = lesson.isCurrent;
 
   console.log("lesson", lesson)
 
@@ -79,20 +79,19 @@ export const LessonPopover = ({
         <Popover open={true}>
           <PopoverTrigger asChild>
             <div
-              className={`cursor-pointer w-[64px] h-[64px] rounded-full border-2 flex items-center justify-center bg-[#1a1a1e] ${
-                showContinue ? "shadow-[0_0_24px_#00C8FF]" : ""
-              }`}
+              className={`cursor-pointer w-[64px] h-[64px] rounded-full border-2 flex items-center justify-center bg-[#1a1a1e] ${showContinue ? "shadow-[0_0_24px_#00C8FF]" : ""
+                }`}
               style={{
                 borderColor: completed
                   ? "#00C8FF"
                   : locked
-                  ? "#25252A"
-                  : "#00C8FF",
+                    ? "#25252A"
+                    : "#00C8FF",
                 backgroundColor: completed
                   ? "rgba(0, 200, 255, 0.1)"
                   : locked
-                  ? "#1a1a1e"
-                  : "rgba(0, 200, 255, 0.05)",
+                    ? "#1a1a1e"
+                    : "rgba(0, 200, 255, 0.05)",
               }}
               onClick={() => {
                 setShowContinue(false);
@@ -122,20 +121,19 @@ export const LessonPopover = ({
         <Popover open={openPopover === lesson.id && !isModalOpen}>
           <PopoverTrigger asChild>
             <div
-              className={`cursor-pointer  w-[64px] h-[64px] rounded-full border-2 flex items-center justify-center bg-[#1a1a1e] ${
-                showContinue ? "shadow-[0_0_24px_#00C8FF]" : ""
-              }`}
+              className={`cursor-pointer  w-[64px] h-[64px] rounded-full border-2 flex items-center justify-center bg-[#1a1a1e] ${showContinue ? "shadow-[0_0_24px_#00C8FF]" : ""
+                }`}
               style={{
                 borderColor: completed
                   ? "#00C8FF"
                   : locked
-                  ? "#25252A"
-                  : "#00C8FF",
+                    ? "#25252A"
+                    : "#00C8FF",
                 backgroundColor: completed
                   ? "rgba(0, 200, 255, 0.1)"
                   : locked
-                  ? "#1a1a1e"
-                  : "rgba(0, 200, 255, 0.05)",
+                    ? "#1a1a1e"
+                    : "rgba(0, 200, 255, 0.05)",
               }}
               onClick={() => togglePopover(lesson.id)}
             >

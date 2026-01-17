@@ -9,7 +9,7 @@ import { Plus } from "lucide-react";
 export function NewContentCard() {
   return (
     <>
-      <div className="bg-gray-gradient border border-[#25252A] rounded-[16px] mb-4 flex max-h-[400px] lg:h-full overflow-hidden shadow-xl">
+      <div className="bg-gray-gradient border border-[#25252A] rounded-[16px] mb-4 flex max-h-[400px] lg:h-full overflow-hidden shadow-xl min-w-0 w-full">
         {/* Lado esquerdo */}
         <div className="relative lg:px-8 px-4 lg:pb-8 pb-4 lg:pt-4 pt-2 flex flex-col justify-between">
           {/* Fade direito */}
