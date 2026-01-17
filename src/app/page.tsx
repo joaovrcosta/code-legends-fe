@@ -9,6 +9,12 @@ import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
 import { ActivityCalendar } from "@/components/home/activity-calendar";
 import { NewsBannerCarousel } from "@/components/home/news-banner-carousel";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Início - Code Legends",
+  description: "Dashboard principal com suas trilhas, recomendações e progresso de aprendizado.",
+};
 
 export default async function Home() {
   const courses = await listCourses();

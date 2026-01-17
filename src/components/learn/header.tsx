@@ -139,7 +139,7 @@ export default function LearnHeader({
             <Input
               placeholder="Pesquisar"
               readOnly
-              className="cursor-pointer h-[42px] w-full hidden sm:block"
+              className="cursor-pointer h-[42px] w-full hidden sm:block rounded-full hover:bg-[#25252a] transition-all duration-150 ease-in-out"
             />
             <button className="flex sm:hidden items-center justify-center h-[42px] w-[42px] rounded-lg border border-[#25252a] hover:bg-[#25252a] transition-all duration-150 ease-in-out">
               <Search size={24} className="text-[#c4c4cc]" />
@@ -181,7 +181,7 @@ export default function LearnHeader({
           <div className="relative">
             <Input
               placeholder="Digite sua pesquisa..."
-              className="w-full pr-10 h-[42px]"
+              className="w-full pr-10 h-[42px] rounded-full hover:bg-[#25252a] transition-all duration-150 ease-in-out"
               autoFocus
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -220,7 +220,7 @@ export default function LearnHeader({
                 {searchResults.map((course) => (
                   <Link
                     key={course.id}
-                    href={`/learn/catalog`}
+                    href={`/learn/paths/${course.slug}`}
                     onClick={() => setIsSearchModalOpen(false)}
                   >
                     <div className="flex items-center gap-4 p-4 mb-3 rounded-lg border border-[#25252A] hover:border-[#35BED5] hover:bg-[#1A1A1E] transition-colors cursor-pointer">

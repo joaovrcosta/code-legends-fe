@@ -3,6 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import onboardingImage from "../../../public/onboarding-img-1.png";
 import codeLogo from "../../../public/code-legends-logo.svg";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Onboarding - Code Legends",
+  description: "Configure seu perfil e comece sua jornada de aprendizado.",
+};
 
 export default function OnboardingPage() {
   return (

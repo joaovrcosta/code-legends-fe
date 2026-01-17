@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sala de Aula - Code Legends",
-  description: "Assista às aulas e continue aprendendo programação.",
+  title: "Meus Estudos - Code Legends",
+  description: "Acompanhe seu progresso e continue seus estudos.",
 };
 
-export default function ClassroomLayout({
+export default function MyLearningLayout({
   children,
 }: {
   children: React.ReactNode;

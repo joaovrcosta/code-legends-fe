@@ -3,6 +3,12 @@ import { getCourseRoadmap } from "@/actions/course";
 import { LearnPageContent } from "@/components/learn/learn-page-content";
 import Link from "next/link";
 import { PrimaryButton } from "@/components/ui/primary-button";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Aprender - Code Legends",
+  description: "Acesse seus cursos, trilhas de aprendizado e continue sua jornada de programação.",
+};
 
 export default async function LearnPage() {
   const activeCourse = await getActiveCourse();
