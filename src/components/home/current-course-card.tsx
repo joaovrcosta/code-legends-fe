@@ -27,7 +27,7 @@ export async function CurrentCourseCard() {
                     </div>
                     <div className="relative flex-shrink-0 flex flex-row items-center justify-center left-[-8px]">
                         <Image
-                            src="https://xesque.rocketseat.dev/platform/1760965441182.svg"
+                            src={activeCourse.icon}
                             alt={activeCourse.title}
                             width={28}
                             height={28}
