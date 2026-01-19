@@ -4,6 +4,7 @@ import { Providers } from "@/components/providers/session-provider";
 import { ConditionalAppShell } from "@/components/layout/conditional-app-shell";
 import { getActiveCourse } from "@/actions/user/get-active-course";
 import { getUserEnrolledList } from "@/actions/progress";
+import type { Metadata } from "next";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -16,6 +17,11 @@ const inter = Inter({
   weight: ["400", "500", "600", "700"],
   variable: "--font-inter",
 });
+
+export const metadata: Metadata = {
+  title: "Code Legends - Aprenda Programação do Zero",
+  description: "Plataforma de ensino de programação com cursos completos de front-end, back-end e desenvolvimento full-stack.",
+};
 
 export default async function RootLayout({
   children,

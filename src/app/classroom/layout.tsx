@@ -1,12 +1,18 @@
+import type { Metadata } from "next";
 import ClassroomHeader from "@/components/classroom/header";
 import { getActiveCourse } from "@/actions/user/get-active-course";
 import { getUserEnrolledList } from "@/actions/progress";
 
-interface DashboardProps {
-  children: React.ReactNode;
-}
+export const metadata: Metadata = {
+  title: "Sala de Aula - Code Legends",
+  description: "Assista às aulas e continue aprendendo programação.",
+};
 
-export default async function ClassroomLayout({ children }: DashboardProps) {
+export default async function ClassroomLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   // Busca os dados no servidor
   const [enrolledCoursesData, activeCourse] = await Promise.all([
     getUserEnrolledList(),
@@ -14,14 +20,12 @@ export default async function ClassroomLayout({ children }: DashboardProps) {
   ]);
 
   return (
-    <div className="h-[100dvh] w-full flex flex-col">
+    <>
       <ClassroomHeader
         initialUserCourses={enrolledCoursesData.userCourses || []}
         initialActiveCourse={activeCourse}
       />
-      <div className="flex-1 lg:h-[calc(100dvh-63px)] h-[calc(100dvh-112px)] overflow-y-auto">
-        <main className="w-full">{children}</main>
-      </div>
-    </div>
+      {children}
+    </>
   );
 }

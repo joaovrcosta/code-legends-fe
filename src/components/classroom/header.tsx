@@ -32,7 +32,7 @@ export default function ClassroomHeader({
   const { currentLesson } = useCourseModalStore();
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [roadmap, setRoadmap] = useState<RoadmapResponse | null>(null);
-  
+
   // Custom hook gerencia toda a lógica de atualização do roadmap
   useRoadmapUpdater({
     isOpen: true,
@@ -41,15 +41,15 @@ export default function ClassroomHeader({
     lessonCompletedTimestamp: null,
     onRoadmapUpdate: setRoadmap,
   });
-  
+
   // Usa o activeCourse do store se disponível, senão usa o inicial
   const currentActiveCourse = activeCourse || initialActiveCourse;
-  
+
   // Constrói o path do curso dinamicamente
-  const coursePath = currentActiveCourse?.slug 
-    ? `/learn/paths/${currentActiveCourse.slug}` 
+  const coursePath = currentActiveCourse?.slug
+    ? `/learn/paths/${currentActiveCourse.slug}`
     : "/learn/catalog";
-  
+
   // Nome do curso para exibir (fallback para "Curso" se não tiver título)
   const courseName = currentActiveCourse?.title || "Curso";
 
@@ -57,7 +57,7 @@ export default function ClassroomHeader({
   const { moduleTitle, groupTitle } = useMemo(() => {
     let moduleTitleValue: string | undefined;
     let groupTitleValue: string | undefined;
-    
+
     if (roadmap?.modules && currentLesson) {
       for (const moduleItem of roadmap.modules) {
         for (const groupItem of moduleItem.groups || []) {
@@ -70,7 +70,7 @@ export default function ClassroomHeader({
         if (moduleTitleValue && groupTitleValue) break;
       }
     }
-    
+
     return { moduleTitle: moduleTitleValue, groupTitle: groupTitleValue };
   }, [roadmap?.modules, currentLesson]);
 
@@ -96,14 +96,14 @@ export default function ClassroomHeader({
               {/* <LoggedSheet /> */}
 
               <div>
-                <Link href="/learn">
+                <Link href="/">
                   <Image
                     src={codeLegendsLogo}
                     alt="Code Legends"
                     className="lg:block hidden"
                   />
                 </Link>
-                <Link href="/learn">
+                <Link href="/">
                   <Image
                     src={codeLegendsLogoMobile}
                     alt="Code Legends"
@@ -190,14 +190,12 @@ export default function ClassroomHeader({
                 {/* Reprodução automática */}
                 <button
                   onClick={() => setIsAutoplay(!isAutoplay)}
-                  className={`relative w-11 h-6 rounded-full transition-colors ${
-                    isAutoplay ? "bg-[#00C8FF]" : "bg-[#25252A]"
-                  }`}
+                  className={`relative w-11 h-6 rounded-full transition-colors ${isAutoplay ? "bg-[#00C8FF]" : "bg-[#25252A]"
+                    }`}
                 >
                   <span
-                    className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                      isAutoplay ? "translate-x-5" : "translate-x-0"
-                    }`}
+                    className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${isAutoplay ? "translate-x-5" : "translate-x-0"
+                      }`}
                   />
                 </button>
 

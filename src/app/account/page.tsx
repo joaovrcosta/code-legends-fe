@@ -5,6 +5,12 @@ import { Crown, KeyRound } from "lucide-react";
 import Link from "next/link";
 import { getCurrentUser } from "@/actions/user/get-current-user";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Minha Conta - Code Legends",
+  description: "Gerencie sua conta, cursos, certificados e configurações pessoais.",
+};
 
 export const dynamic = "force-dynamic";
 
