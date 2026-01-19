@@ -54,11 +54,11 @@ export default function LoginPage() {
       const result = await loginUser(formData);
 
       if (result?.success) {
-        // Redirecionar para /learn e deixar o middleware fazer o redirect
+        // Redirecionar para / e deixar o middleware fazer o redirect
         // para /onboarding se o usuário não completou o onboarding
         // Usar window.location.href para forçar reload completo e garantir
         // que o middleware seja executado com a sessão atualizada
-        window.location.href = "/learn";
+        window.location.href = "/";
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : "Erro ao fazer login");

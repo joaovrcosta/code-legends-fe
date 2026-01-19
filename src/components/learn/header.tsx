@@ -111,14 +111,14 @@ export default function LearnHeader({
             {/* <LoggedSheet /> */}
 
             <div>
-              <Link href="/learn">
+              <Link href="/">
                 <Image
                   src={codeLegendsLogo}
                   alt="Code Legends"
                   className="lg:block hidden"
                 />
               </Link>
-              <Link href="/learn">
+              <Link href="/">
                 <Image
                   src={codeLegendsLogoMobile}
                   alt="Code Legends"

@@ -213,10 +213,10 @@ export function CourseBanner({ course, userProgress }: CourseBannerProps) {
               {mounted && isLoading
                 ? "Carregando..."
                 : mounted && isCheckingEnrollment
-                ? "Verificando..."
-                : mounted && isEnrolled
-                ? "Iniciar"
-                : "Inscrever"}
+                  ? "Verificando..."
+                  : mounted && isEnrolled
+                    ? "Iniciar"
+                    : "Inscrever"}
             </Button>
           </div>
         </div>
@@ -340,7 +340,7 @@ export function CourseBanner({ course, userProgress }: CourseBannerProps) {
                             } else {
                               alert(
                                 result.error ||
-                                  "Erro ao resetar progresso do curso"
+                                "Erro ao resetar progresso do curso"
                               );
                             }
                           } catch (error) {
@@ -401,10 +401,10 @@ export function CourseBanner({ course, userProgress }: CourseBannerProps) {
                 {mounted && isLoading
                   ? "Carregando..."
                   : mounted && isCheckingEnrollment
-                  ? "Verificando..."
-                  : mounted && isEnrolled
-                  ? "Iniciar"
-                  : "Inscrever-se"}
+                    ? "Verificando..."
+                    : mounted && isEnrolled
+                      ? "Iniciar"
+                      : "Inscrever-se"}
               </Button>
               <div className="flex gap-4">
                 <button
@@ -496,7 +496,7 @@ export function CourseBanner({ course, userProgress }: CourseBannerProps) {
           <div className="mt-4 h-full">
             <p className="text-[12px] text-muted-foreground">INSTRUTOR</p>
             <div className="flex items-center gap-3 mt-4">
-              <Avatar className="h-[42px] w-[42px]">
+              <Avatar className="h-[32px] w-[32px]">
                 <AvatarImage src={course.instructor.avatar} />
                 <AvatarFallback>
                   {course.instructor.name
@@ -507,7 +507,10 @@ export function CourseBanner({ course, userProgress }: CourseBannerProps) {
                     .slice(0, 2)}
                 </AvatarFallback>
               </Avatar>
-              <p>{course.instructor.name}</p>
+              <div className="flex flex-col">
+                <p className="text-white text-sm">{course.instructor.name}</p>
+                <p className="text-xs text-[#929191] italic leading-tight">Educator</p>
+              </div>
             </div>
           </div>
         </div>

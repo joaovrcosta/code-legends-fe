@@ -1,14 +1,31 @@
 import type { Metadata } from "next";
+import ClassroomHeader from "@/components/classroom/header";
+import { getActiveCourse } from "@/actions/user/get-active-course";
+import { getUserEnrolledList } from "@/actions/progress";
 
 export const metadata: Metadata = {
   title: "Sala de Aula - Code Legends",
   description: "Assista às aulas e continue aprendendo programação.",
 };
 
-export default function ClassroomLayout({
+export default async function ClassroomLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  // Busca os dados no servidor
+  const [enrolledCoursesData, activeCourse] = await Promise.all([
+    getUserEnrolledList(),
+    getActiveCourse(),
+  ]);
+
+  return (
+    <>
+      <ClassroomHeader
+        initialUserCourses={enrolledCoursesData.userCourses || []}
+        initialActiveCourse={activeCourse}
+      />
+      {children}
+    </>
+  );
 }

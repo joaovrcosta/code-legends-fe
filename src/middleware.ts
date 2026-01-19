@@ -84,8 +84,8 @@ export default auth(
       if (!onboardingCompleted) {
         return NextResponse.redirect(new URL("/onboarding", req.url));
       }
-      // Se completou, redirecionar para /learn
-      return NextResponse.redirect(new URL("/learn", req.url));
+      // Se completou, redirecionar para /
+      return NextResponse.redirect(new URL("/", req.url));
     }
 
     // Se não estiver logado e não for rota pública, redirecionar para login
@@ -99,9 +99,9 @@ export default auth(
       return NextResponse.redirect(new URL("/onboarding", req.url));
     }
 
-    // Se completou onboarding e está tentando acessar rota de onboarding, redirecionar para /learn
+    // Se completou onboarding e está tentando acessar rota de onboarding, redirecionar para /
     if (isLoggedIn && onboardingCompleted && isOnboardingRoute) {
-      return NextResponse.redirect(new URL("/learn", req.url));
+      return NextResponse.redirect(new URL("/", req.url));
     }
 
     return NextResponse.next();

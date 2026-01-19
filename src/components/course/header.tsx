@@ -18,7 +18,7 @@ export default async function CourseHeader() {
     <div className="relative fixed top-0 left-0 w-full z-50 bg-[#121214] border-b border-[#25252A]">
       <ul className="flex justify-between items-center lg:pt-4 pt-2 lg:pb-4 pb-2 max-w-[1560px] mx-auto px-4">
         <li className="flex space-x-3 py-4">
-          <Link href="/learn">
+          <Link href="/">
             <Image src={codeLegendsLogo} alt="Code Legends" />
           </Link>
         </li>

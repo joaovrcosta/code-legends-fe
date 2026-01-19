@@ -141,7 +141,7 @@ export function ActivityCalendar({ activities }: ActivityCalendarProps) {
     // Renderiza placeholder no servidor para evitar hydration mismatch
     if (!isMounted) {
         return (
-            <div className="space-y-4">
+            <div className="space-y-4 max-w-[300px]">
                 <div className="flex gap-4 justify-between">
                     {months.map(({ year, month, monthName }) => (
                         <div key={`${year}-${month}`} className="flex flex-col flex-1">
@@ -177,7 +177,7 @@ export function ActivityCalendar({ activities }: ActivityCalendarProps) {
     }
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 max-w-[300px]">
             <div className="flex gap-4 justify-between">
                 {months.map(({ year, month, monthName }) => {
                     const monthActivities = activityData.filter((activity) => {
