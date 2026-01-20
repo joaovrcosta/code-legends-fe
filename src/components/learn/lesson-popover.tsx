@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import type { Lesson, RoadmapResponse } from "@/types/roadmap";
 import { useCourseModalStore } from "@/stores/course-modal-store";
 import { generateLessonUrl, findLessonContext } from "@/utils/lesson-url";
+import { LessonPlatformIcon } from "./svgs/lesson-platform-icon";
 
 export const LessonPopover = ({
   lesson,
@@ -68,44 +69,25 @@ export const LessonPopover = ({
     }
   };
 
-  // O glow só deve aparecer na lição atual
-  // const shouldShowShadow = lesson.isCurrent;
-
-  console.log("lesson", lesson)
-
   return (
     <div>
       {showContinue && !isModalOpen ? (
         <Popover open={true}>
           <PopoverTrigger asChild>
-            <div
-              className={`cursor-pointer w-[64px] h-[64px] rounded-full border-2 flex items-center justify-center bg-[#1a1a1e] ${showContinue ? "shadow-[0_0_24px_#00C8FF]" : ""
-                }`}
-              style={{
-                borderColor: completed
-                  ? "#00C8FF"
-                  : locked
-                    ? "#25252A"
-                    : "#00C8FF",
-                backgroundColor: completed
-                  ? "rgba(0, 200, 255, 0.1)"
-                  : locked
-                    ? "#1a1a1e"
-                    : "rgba(0, 200, 255, 0.05)",
-              }}
+            <button
+              className={`cursor-pointer flex items-center justify-center ${showContinue ? "" : ""}`}
               onClick={() => {
                 setShowContinue(false);
                 togglePopover(lesson.id);
               }}
+              type="button"
             >
-              {completed ? (
-                <span className="text-[#00C8FF] text-xs">✓</span>
-              ) : locked ? (
-                <Lock size={20} className="text-gray-600" />
-              ) : (
-                <CirclePlay size={24} className="text-[#00C8FF]" />
-              )}
-            </div>
+              <LessonPlatformIcon
+                size={92}
+                completed={completed}
+                disabled={locked}
+              />
+            </button>
           </PopoverTrigger>
           <PopoverContent
             className="w-[120px] cursor-pointer text-center bg-[#121214] rounded-full border-[2px] border-[#25252A] shadow-lg p-2 hover:bg-[#25252A]"
@@ -120,31 +102,17 @@ export const LessonPopover = ({
       ) : (
         <Popover open={openPopover === lesson.id && !isModalOpen}>
           <PopoverTrigger asChild>
-            <div
-              className={`cursor-pointer  w-[64px] h-[64px] rounded-full border-2 flex items-center justify-center bg-[#1a1a1e] ${showContinue ? "shadow-[0_0_24px_#00C8FF]" : ""
-                }`}
-              style={{
-                borderColor: completed
-                  ? "#00C8FF"
-                  : locked
-                    ? "#25252A"
-                    : "#00C8FF",
-                backgroundColor: completed
-                  ? "rgba(0, 200, 255, 0.1)"
-                  : locked
-                    ? "#1a1a1e"
-                    : "rgba(0, 200, 255, 0.05)",
-              }}
+            <button
+              className="cursor-pointer hover:opacity-80 transition-opacity flex items-center justify-center"
               onClick={() => togglePopover(lesson.id)}
+              type="button"
             >
-              {completed ? (
-                <span className="text-[#00C8FF] text-xs font-bold">✓</span>
-              ) : locked ? (
-                <Lock size={20} className="text-gray-600" />
-              ) : (
-                <CirclePlay size={24} className="text-[#00C8FF] " />
-              )}
-            </div>
+              <LessonPlatformIcon
+                size={92}
+                completed={completed}
+                disabled={locked}
+              />
+            </button>
           </PopoverTrigger>
           <PopoverContent className="w-[295px] bg-[#1a1a1e] rounded-[20px] border border-[#25252A] shadow-lg p-4">
             <div className="mb-3">

@@ -76,10 +76,10 @@ export async function CurrentCourseCard() {
                 <p className="text-[#737373] text-sm text-center">
                     Parte da jornada front-end{" "}
                     <Link
-                        href={`/learn/paths/${activeCourse.slug}`}
+                        href={`/learn`}
                         className="text-[#00C8FF] hover:underline"
                     >
-                        Programa de estudos
+                        Veja a nossa Trilha de Aprendizado
                     </Link>
                 </p>
             </div>
