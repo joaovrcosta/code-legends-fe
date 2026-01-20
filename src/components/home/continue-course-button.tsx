@@ -5,6 +5,9 @@ import { PrimaryButton } from "@/components/ui/primary-button";
 import { Play } from "@phosphor-icons/react/dist/ssr";
 import { useCourseEnrollment } from "@/hooks/use-course-enrollment";
 import { useState, useEffect } from "react";
+import { getCourseRoadmapFresh } from "@/actions/course";
+import { findLessonContext, generateLessonUrl } from "@/utils/lesson-url";
+import type { Lesson } from "@/types/roadmap";
 
 interface ContinueCourseButtonProps {
     courseId: string;
@@ -27,13 +30,51 @@ export function ContinueCourseButton({
 
     const handleClick: () => Promise<void> = async () => {
         try {
-            const redirectPath = await handleStartCourse(
-                courseId,
-                `/learn`
-            );
-            if (redirectPath) {
-                router.push(redirectPath);
+            // Primeiro, inicia o curso (faz enroll se necessário)
+            await handleStartCourse(courseId);
+
+            // Busca o roadmap para encontrar a aula atual
+            const roadmapData = await getCourseRoadmapFresh(courseId);
+            
+            if (roadmapData?.modules) {
+                // Coleta todas as aulas do roadmap
+                const allLessons = roadmapData.modules
+                    .flatMap((module) => module?.groups || [])
+                    .flatMap((group) => group?.lessons || []);
+
+                // Encontra a aula atual (isCurrent) ou a primeira desbloqueada
+                let targetLesson: Lesson | null = null;
+                const foundCurrentLesson = allLessons.find((lesson) => lesson.isCurrent);
+                
+                // Só usa a aula atual se ela não estiver bloqueada
+                if (foundCurrentLesson && foundCurrentLesson.status !== "locked") {
+                    targetLesson = foundCurrentLesson;
+                } else {
+                    // Procura a primeira aula desbloqueada
+                    targetLesson = allLessons.find((lesson) => lesson.status !== "locked") || null;
+                }
+
+                if (targetLesson) {
+                    // Encontra o contexto da aula e gera a URL completa
+                    const context = findLessonContext(
+                        targetLesson.id,
+                        roadmapData.modules
+                    );
+                    
+                    if (context) {
+                        const url = generateLessonUrl(
+                            targetLesson,
+                            context.module,
+                            context.group
+                        );
+                        router.push(url);
+                        return;
+                    }
+                }
             }
+
+            // Fallback: se não conseguir gerar URL, redireciona para /classroom
+            router.push("/classroom");
         } catch {
             // Erro já foi logado no hook
         }
