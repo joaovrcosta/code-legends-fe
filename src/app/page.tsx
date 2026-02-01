@@ -5,6 +5,7 @@ import { RecommendationsCarousel } from "@/components/learn/catolog/recommendati
 import { NewsBannerCarousel } from "@/components/home/news-banner-carousel";
 import type { Metadata } from "next";
 import { UserProfiler } from "@/components/home/user-profiler";
+import { CurrentCourses } from "@/components/home/current-courses";
 
 export const metadata: Metadata = {
   title: "Início - Code Legends",
@@ -19,7 +20,7 @@ export default async function Home() {
     <div className="w-full lg:p-6 pt-6 pl-6 pr-0 pb-6">
       <div className="flex flex-col lg:flex-row max-w-[1520px] lg:p-6 p-0 pb-10 gap-8 md:gap-10 mx-auto">
         {/* Conteúdo principal - Esquerda */}
-        <div className="flex-1 flex flex-col items-start">
+        <div className="flex-1 flex flex-col items-start min-w-0">
           {/* Seus cursos e Catálogo */}
           <div className="w-full">
             <div className="flex items-center space-x-2 pb-4 lg:pt-8 pt-0">
@@ -29,6 +30,10 @@ export default async function Home() {
             </div>
             <div className="lg:pr-0 pr-6">
               <CurrentCourseCard />
+            </div>
+
+            <div className="w-full pr-6 mt-6">
+              <CurrentCourses />
             </div>
 
             {/* UserProfiler - Mobile: aparece aqui, Desktop: hidden */}
@@ -55,7 +60,7 @@ export default async function Home() {
             </div>
 
 
-            <div className="w-full relative px-0 overflow-hidden">
+            <div className="w-full relative px-0 overflow-hidden min-w-0">
               <NewsBannerCarousel />
             </div>
 
@@ -71,7 +76,7 @@ export default async function Home() {
         </div>
 
         {/* UserProfiler - Desktop: aparece aqui, Mobile: hidden */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:block flex-shrink-0">
           <UserProfiler />
         </div>
       </div>

@@ -1,9 +1,9 @@
 "use client";
 
 import { ArrowLeft, Play, Pause } from "lucide-react";
-import Link from "next/link";
 import { useState, memo, useMemo } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface LessonHeaderProps {
   courseTitle?: string;
@@ -18,6 +18,7 @@ export const LessonHeader = memo(function LessonHeader({
   groupTitle,
   courseIcon,
 }: LessonHeaderProps) {
+  const router = useRouter();
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -34,13 +35,12 @@ export const LessonHeader = memo(function LessonHeader({
         <div className="flex items-center justify-between px-4 lg:py-3 py-2">
           {/* Lado esquerdo */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
-            <Link href="/learn" className="flex items-center justify-center">
             <button
+              onClick={() => router.back()}
               className="flex-shrink-0 text-white hover:text-[#00C8FF] transition-colors"
             >
               <ArrowLeft size={20} />
             </button>
-            </Link>
 
             <div className="h-6 w-px bg-[#25252A]" />
 
@@ -80,14 +80,12 @@ export const LessonHeader = memo(function LessonHeader({
               </span>
               <button
                 onClick={() => setIsAutoplay(!isAutoplay)}
-                className={`relative w-11 h-6 rounded-full transition-colors ${
-                  isAutoplay ? "bg-[#00C8FF]" : "bg-[#25252A]"
-                }`}
+                className={`relative w-11 h-6 rounded-full transition-colors ${isAutoplay ? "bg-[#00C8FF]" : "bg-[#25252A]"
+                  }`}
               >
                 <span
-                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                    isAutoplay ? "translate-x-5" : "translate-x-0"
-                  }`}
+                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${isAutoplay ? "translate-x-5" : "translate-x-0"
+                    }`}
                 />
               </button>
             </div>

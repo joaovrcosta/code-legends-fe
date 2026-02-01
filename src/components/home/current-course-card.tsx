@@ -16,9 +16,7 @@ export async function CurrentCourseCard() {
 
     return (
         <div className="">
-            {/* Tag FORMAÇÃO */}
-
-            <div className="flex flex-col lg:flex-row justify-center items-center">
+            <div className="flex flex-col lg:flex-row justify-center rounded-[20px] items-center bg-gradient-to-b border border-[#25252A] from-[#1a1a1e] to-[#0e0e0e] p-6">
                 <div className="flex flex-col lg:items-start items-center flex-1 mb-5">
                     <div className="flex lg:justify-start justify-center mb-6">
                         <span className="bg-transparent text-[#737373] border border-[#737373] text-xs font-medium px-3 py-1 rounded-full">
@@ -29,13 +27,13 @@ export async function CurrentCourseCard() {
                         <Image
                             src={activeCourse.icon}
                             alt={activeCourse.title}
-                            width={28}
-                            height={28}
-                            className="object-cover h-12 w-12"
+                            width={32}
+                            height={32}
+                            className="object-cover h-14 w-14"
                         />
-                        <h2 className="text-white text-2xl font-medium">
+                        <span className="bg-blue-gradient-500 bg-clip-text text-transparent font-medium text-2xl">
                             {activeCourse.title}
-                        </h2>
+                        </span>
 
                     </div>
                     <div className="flex items-center gap-4 w-[240px] lg:mt-0 mt-5">
@@ -72,7 +70,7 @@ export async function CurrentCourseCard() {
                 </div>
 
             </div>
-            <div className="pt-4 border-t border-[#25252A] flex items-center lg:justify-start justify-center">
+            <div className="pt-4 flex items-center lg:justify-start justify-center">
                 <p className="text-[#737373] text-sm text-center">
                     Parte da jornada front-end{" "}
                     <Link

@@ -35,7 +35,7 @@ export function ContinueCourseButton({
 
             // Busca o roadmap para encontrar a aula atual
             const roadmapData = await getCourseRoadmapFresh(courseId);
-            
+
             if (roadmapData?.modules) {
                 // Coleta todas as aulas do roadmap
                 const allLessons = roadmapData.modules
@@ -45,7 +45,7 @@ export function ContinueCourseButton({
                 // Encontra a aula atual (isCurrent) ou a primeira desbloqueada
                 let targetLesson: Lesson | null = null;
                 const foundCurrentLesson = allLessons.find((lesson) => lesson.isCurrent);
-                
+
                 // Só usa a aula atual se ela não estiver bloqueada
                 if (foundCurrentLesson && foundCurrentLesson.status !== "locked") {
                     targetLesson = foundCurrentLesson;
@@ -60,7 +60,7 @@ export function ContinueCourseButton({
                         targetLesson.id,
                         roadmapData.modules
                     );
-                    
+
                     if (context) {
                         const url = generateLessonUrl(
                             targetLesson,
@@ -92,7 +92,7 @@ export function ContinueCourseButton({
         <PrimaryButton
             onClick={handleClick}
             disabled={isLoading || isCheckingEnrollment}
-            className={`w-full bg-blue-gradient-500 transition-all rounded-full lg:text-[18px] text-[14px] duration-300 hover:shadow-[0_0_12px_#00C8FF] font-semibold px-6 py-2 lg:h-[50px] h-[42px] disabled:opacity-50 border-none ${className}`}
+            className={`w-full bg-blue-gradient-500 transition-all rounded-[12px] lg:text-[18px] text-[14px] duration-300 hover:shadow-[0_0_12px_#00C8FF] font-semibold px-6 py-2 lg:h-[50px] h-[42px] disabled:opacity-50 border-none ${className}`}
             suppressHydrationWarning
         >
             <span className="flex items-center gap-2">
