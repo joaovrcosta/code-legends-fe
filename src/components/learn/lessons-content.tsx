@@ -74,44 +74,44 @@ export function LessonsContent({
                     return (
                       <div
                         key={lesson.id}
-                        className="max-w-[384px]"
+                        className="max-w-[392px] mb-12"
                         ref={(el) => {
                           taskRefs.current[lesson.id] = el;
                         }}
                       >
-                        <div className="flex items-center justify-center space-x-4 mb-6 pt-7 max-w-[384px]">
+                        <div className="flex items-center justify-center mb-6 max-w-[384px] w-full">
                           {isLeft && (
                             <div
-                              className={`h-[42px] lg:w-[256px] w-[212px] rounded-tl-[55px] border-t border-l ${
-                                completed
-                                  ? "border-[#00C8FF]"
-                                  : "border-[#25252A]"
-                              }`}
+                              className={`h-[46px] lg:w-[256px] w-[212px] rounded-tl-[55px] border-t border-l flex-shrink-0 self-center ${completed
+                                ? "border-[#00C8FF]"
+                                : "border-[#25252A]"
+                                }`}
                             ></div>
                           )}
-                          <LessonPopover
-                            lesson={lesson}
-                            openPopover={openPopover}
-                            togglePopover={togglePopover}
-                            showContinue={
-                              showContinue &&
-                              firstIncompleteLesson?.id === lesson.id
-                            }
-                            setShowContinue={setShowContinue}
-                            completed={completed}
-                            locked={locked}
-                            currentCourseSlug={activeCourse.slug}
-                            allLessons={allLessons}
-                            roadmap={roadmap}
-                            isFirstInModule={isFirstInModule}
-                          />
+                          <div className="flex-shrink-0 flex items-center justify-center">
+                            <LessonPopover
+                              lesson={lesson}
+                              openPopover={openPopover}
+                              togglePopover={togglePopover}
+                              showContinue={
+                                showContinue &&
+                                firstIncompleteLesson?.id === lesson.id
+                              }
+                              setShowContinue={setShowContinue}
+                              completed={completed}
+                              locked={locked}
+                              currentCourseSlug={activeCourse.slug}
+                              allLessons={allLessons}
+                              roadmap={roadmap}
+                              isFirstInModule={isFirstInModule}
+                            />
+                          </div>
                           {!isLeft && (
                             <div
-                              className={`h-[42px] lg:w-[256px] w-[212px] rounded-tr-[55px] border-t border-r ${
-                                completed
-                                  ? "border-[#00C8FF]"
-                                  : "border-[#25252A]"
-                              }`}
+                              className={`h-[46px] lg:w-[256px] w-[212px] rounded-tr-[55px] border-t border-r flex-shrink-0 self-center ${completed
+                                ? "border-[#00C8FF]"
+                                : "border-[#25252A]"
+                                }`}
                             ></div>
                           )}
                         </div>

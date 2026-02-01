@@ -123,16 +123,25 @@ export function ActivityCalendar({ activities }: ActivityCalendarProps) {
     // Obtém os últimos 3 meses
     const months = useMemo(() => {
         const today = new Date();
-        const monthsList = [];
+        const monthsList: Array<{ year: number; month: number; monthName: string; key: string }> = [];
+        const seenKeys = new Set<string>();
 
         for (let i = 2; i >= 0; i--) {
-            const date = new Date(today);
-            date.setMonth(date.getMonth() - i);
-            monthsList.push({
-                year: date.getFullYear(),
-                month: date.getMonth(),
-                monthName: date.toLocaleDateString("pt-BR", { month: "short" }),
-            });
+            const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            const monthKey = `${year}-${String(month + 1).padStart(2, "0")}`;
+
+            // Garante que não há duplicatas
+            if (!seenKeys.has(monthKey)) {
+                seenKeys.add(monthKey);
+                monthsList.push({
+                    year,
+                    month,
+                    monthName: date.toLocaleDateString("pt-BR", { month: "short" }),
+                    key: monthKey,
+                });
+            }
         }
 
         return monthsList;
@@ -143,8 +152,8 @@ export function ActivityCalendar({ activities }: ActivityCalendarProps) {
         return (
             <div className="space-y-4 max-w-[300px]">
                 <div className="flex gap-4 justify-between">
-                    {months.map(({ year, month, monthName }) => (
-                        <div key={`${year}-${month}`} className="flex flex-col flex-1">
+                    {months.map(({ year, month, monthName, key }) => (
+                        <div key={key} className="flex flex-col flex-1">
                             <h3 className="text-white text-sm font-medium mb-2 capitalize">
                                 {monthName}
                             </h3>
@@ -179,7 +188,7 @@ export function ActivityCalendar({ activities }: ActivityCalendarProps) {
     return (
         <div className="space-y-4 max-w-[300px]">
             <div className="flex gap-4 justify-between">
-                {months.map(({ year, month, monthName }) => {
+                {months.map(({ year, month, monthName, key }) => {
                     const monthActivities = activityData.filter((activity) => {
                         const activityDate = new Date(activity.date);
                         return (
@@ -191,7 +200,7 @@ export function ActivityCalendar({ activities }: ActivityCalendarProps) {
                     const grid = generateMonthGrid(year, month, monthActivities);
 
                     return (
-                        <div key={`${year}-${month}`} className="flex flex-col flex-1">
+                        <div key={key} className="flex flex-col flex-1">
                             <h3 className="text-white text-sm font-medium mb-2 capitalize">
                                 {monthName}
                             </h3>
