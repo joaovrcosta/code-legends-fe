@@ -27,14 +27,12 @@ export function LessonPlatformIcon({
 
     // proporção: ambos têm height 58; widths 97 e 96
     const baseW = completed ? 97 : 96;
-    const height = Math.round((size * 58) / baseW);
+    // const height = Math.round((size * 58) / baseW);
 
     return (
         <span
             className={className}
             style={{
-                width: size,
-                height,
                 display: "inline-block",
                 opacity: disabled ? 0.55 : 1,
                 ...style,

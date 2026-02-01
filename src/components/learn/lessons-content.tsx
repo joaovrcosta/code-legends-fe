@@ -60,7 +60,7 @@ export function LessonsContent({
               group.lessons.length > 0 && (
                 <div
                   key={group.id}
-                  className="flex flex-col items-center justify-center"
+                  className="flex flex-col items-center justify-center w-full"
                 >
                   <DividerWithText text={group.title} />
                   {group.lessons?.map((lesson, lessonIndex) => {
@@ -74,7 +74,7 @@ export function LessonsContent({
                     return (
                       <div
                         key={lesson.id}
-                        className="max-w-[392px] mb-12"
+                        className="max-w-[420px] mb-4"
                         ref={(el) => {
                           taskRefs.current[lesson.id] = el;
                         }}
@@ -82,11 +82,11 @@ export function LessonsContent({
                         <div className="flex items-center justify-center mb-6 max-w-[384px] w-full">
                           {isLeft && (
                             <div
-                              className={`h-[46px] lg:w-[256px] w-[212px] rounded-tl-[55px] border-t border-l flex-shrink-0 self-center ${completed
+                              className={`h-[46px] lg:w-[256px] w-[212px] rounded-tl-[55px] border-t border-l flex-shrink-0 self-center translate-y-[20px] ${completed
                                 ? "border-[#00C8FF]"
                                 : "border-[#25252A]"
                                 }`}
-                            ></div>
+                            />
                           )}
                           <div className="flex-shrink-0 flex items-center justify-center">
                             <LessonPopover
@@ -108,7 +108,7 @@ export function LessonsContent({
                           </div>
                           {!isLeft && (
                             <div
-                              className={`h-[46px] lg:w-[256px] w-[212px] rounded-tr-[55px] border-t border-r flex-shrink-0 self-center ${completed
+                              className={`h-[46px] lg:w-[256px] w-[212px] rounded-tr-[55px] border-t border-r flex-shrink-0 self-center translate-y-[20px] ${completed
                                 ? "border-[#00C8FF]"
                                 : "border-[#25252A]"
                                 }`}
