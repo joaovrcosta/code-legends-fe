@@ -15,6 +15,7 @@ import type { Lesson, RoadmapResponse } from "@/types/roadmap";
 import { useCourseModalStore } from "@/stores/course-modal-store";
 import { generateLessonUrl, findLessonContext } from "@/utils/lesson-url";
 import { LessonPlatformIcon } from "./svgs/lesson-platform-icon";
+import { motion } from "framer-motion";
 
 export const LessonPopover = ({
   lesson,
@@ -90,21 +91,36 @@ export const LessonPopover = ({
             </button>
           </PopoverTrigger>
           <PopoverContent
-            className="w-[120px] cursor-pointer text-center bg-[#121214] rounded-full border-[2px] border-[#25252A] shadow-lg p-2 hover:bg-[#25252A]"
+            className="w-[130px] cursor-pointer text-center bg-[#121214] rounded-full border-2 border-[#25252A] shadow-lg px-4 py-3 hover:bg-[#25252A]"
             side="top"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowContinue(false);
+              togglePopover(lesson.id);
+            }}
           >
-            <div className="flex flex-col items-center justify-center gap-2">
-              <span className="text-white text-sm font-semibold">Começar</span>
+            <div className="flex flex-col items-center justify-center">
+              <span className="text-white text-sm font-semibold leading-tight">Começar</span>
             </div>
-            <PopoverArrow className="fill-[#25252A] mb-3 w-4 h-4 transform translate-y-[-2px]" />
+            <PopoverArrow className="fill-[#25252A] w-4 h-4" />
           </PopoverContent>
         </Popover>
       ) : (
-        <Popover open={openPopover === lesson.id && !isModalOpen}>
+        <Popover
+          open={openPopover === lesson.id && !isModalOpen}
+          onOpenChange={(open) => {
+            if (!open && openPopover === lesson.id) {
+              togglePopover(lesson.id);
+            }
+          }}
+        >
           <PopoverTrigger asChild>
             <button
               className="cursor-pointer hover:opacity-80 transition-opacity flex items-center justify-center"
-              onClick={() => togglePopover(lesson.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                togglePopover(lesson.id);
+              }}
               type="button"
             >
               <LessonPlatformIcon
@@ -114,42 +130,59 @@ export const LessonPopover = ({
               />
             </button>
           </PopoverTrigger>
-          <PopoverContent className="w-[295px] bg-[#1a1a1e] rounded-[20px] border border-[#25252A] shadow-lg p-4">
-            <div className="mb-3">
-              <div className="flex items-center space-x-2">
-                <span className="font-bold bg-blue-gradient-500 bg-clip-text text-transparent text-xs">
-                  {lesson.type}
-                </span>
-                <span className="text-xs text-[#7e7e89]">
-                  {lesson.video_duration || "Aula"}
-                </span>
+          <PopoverContent
+            className="!bg-[#1a1a1e] !text-white rounded-[20px]"
+            asChild
+          >
+            <motion.div
+              className="w-[295px] bg-[#1a1a1e] rounded-[20px] border border-[#25252A] shadow-lg p-4 z-50 outline-none text-white"
+              style={{ backgroundColor: '#1a1a1e' }}
+              initial={{ opacity: 0, scale: 0.96, y: -8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: -8 }}
+              transition={{
+                duration: 0.25,
+                ease: [0.16, 1, 0.3, 1]
+              }}
+            >
+              <div className="mb-3">
+                <div className="flex items-center space-x-2">
+                  <span className="font-bold bg-blue-gradient-500 bg-clip-text text-transparent text-xs">
+                    {lesson.type}
+                  </span>
+                  <span className="text-xs text-[#7e7e89]">
+                    {lesson.video_duration || "Aula"}
+                  </span>
+                </div>
+                <h3 className="text-xl mt-2 text-white">{lesson.title}</h3>
+                {lesson.description && (
+                  <p className="text-sm text-[#7e7e89] mt-1">
+                    {lesson.description}
+                  </p>
+                )}
               </div>
-              <h3 className="text-xl mt-2 text-white">{lesson.title}</h3>
-              {lesson.description && (
-                <p className="text-sm text-[#7e7e89] mt-1">
-                  {lesson.description}
-                </p>
+
+              <PrimaryButton disabled={locked} onClick={handleWatchClick}>
+                {locked ? "Bloqueado" : completed ? "Revisar" : "Assistir"}
+                {locked ? <Lock /> : <CirclePlay />}
+              </PrimaryButton>
+
+              {(lesson.type === "project" || lesson.type === "quiz") && (
+                <Link href={`/skip-lesson/${lesson.id}`}>
+                  <PrimaryButton className="mt-2" disabled={locked}>
+                    Pular
+                    <FastForward size={24} weight="fill" />
+                  </PrimaryButton>
+                </Link>
               )}
-            </div>
 
-            <PrimaryButton disabled={locked} onClick={handleWatchClick}>
-              {locked ? "Bloqueado" : completed ? "Revisar" : "Assistir"}
-              {locked ? <Lock /> : <CirclePlay />}
-            </PrimaryButton>
-
-            {(lesson.type === "project" || lesson.type === "quiz") && (
-              <Link href={`/skip-lesson/${lesson.id}`}>
-                <PrimaryButton className="mt-2" disabled={locked}>
-                  Pular
-                  <FastForward size={24} weight="fill" />
-                </PrimaryButton>
-              </Link>
-            )}
-
-            <PopoverArrow className="fill-[#1a1a1e] w-4 h-4 transform translate-y-[-2px]" />
+              <PopoverArrow className="fill-[#1a1a1e] w-4 h-4 transform translate-y-[-2px]" />
+            </motion.div>
           </PopoverContent>
         </Popover>
-      )}
-    </div>
+
+      )
+      }
+    </div >
   );
 };
