@@ -5,6 +5,7 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverArrow,
+  PopoverAnchor,
 } from "@/components/ui/popover";
 import { PrimaryButton } from "../ui/primary-button";
 import { FastForward, Lock } from "@phosphor-icons/react/dist/ssr";
@@ -73,42 +74,59 @@ export const LessonPopover = ({
   return (
     <div>
       {showContinue && !isModalOpen ? (
-        <Popover open={true}>
-          <PopoverTrigger asChild>
-            <button
-              className={`cursor-pointer flex items-center justify-center ${showContinue ? "" : ""}`}
-              onClick={() => {
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowContinue(false);
+            togglePopover(lesson.id);
+          }}
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setShowContinue(false);
+            togglePopover(lesson.id);
+          }}
+          className="touch-manipulation"
+        >
+          <Popover open={true}>
+            <PopoverAnchor asChild>
+              <button
+                className="cursor-pointer flex items-center justify-center"
+                type="button"
+              >
+                <LessonPlatformIcon
+                  size={92}
+                  completed={completed}
+                  disabled={locked}
+                />
+              </button>
+            </PopoverAnchor>
+            <PopoverContent
+              className="w-[130px] cursor-pointer text-center bg-[#121214] rounded-full border-2 border-[#25252A] shadow-lg px-4 py-3 hover:bg-[#25252A] touch-manipulation"
+              side="top"
+              onClick={(e) => {
+                e.stopPropagation();
                 setShowContinue(false);
                 togglePopover(lesson.id);
               }}
-              type="button"
+              onTouchEnd={(e) => {
+                e.stopPropagation();
+                setShowContinue(false);
+                togglePopover(lesson.id);
+              }}
             >
-              <LessonPlatformIcon
-                size={92}
-                completed={completed}
-                disabled={locked}
-              />
-            </button>
-          </PopoverTrigger>
-          <PopoverContent
-            className="w-[130px] cursor-pointer text-center bg-[#121214] rounded-full border-2 border-[#25252A] shadow-lg px-4 py-3 hover:bg-[#25252A]"
-            side="top"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowContinue(false);
-              togglePopover(lesson.id);
-            }}
-          >
-            <div className="flex flex-col items-center justify-center">
-              <span className="text-white text-sm font-semibold leading-tight">Começar</span>
-            </div>
-            <PopoverArrow className="fill-[#25252A] w-4 h-4" />
-          </PopoverContent>
-        </Popover>
+              <div className="flex flex-col items-center justify-center">
+                <span className="text-white text-sm font-semibold leading-tight">Começar</span>
+              </div>
+              <PopoverArrow className="fill-[#25252A] w-4 h-4" />
+            </PopoverContent>
+          </Popover>
+        </div>
       ) : (
         <Popover
           open={openPopover === lesson.id && !isModalOpen}
           onOpenChange={(open) => {
+            // Quando o popover é fechado (clicando fora ou pressionando ESC)
             if (!open && openPopover === lesson.id) {
               togglePopover(lesson.id);
             }
@@ -118,7 +136,9 @@ export const LessonPopover = ({
             <button
               className="cursor-pointer hover:opacity-80 transition-opacity flex items-center justify-center"
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
+                // Toggle: se estiver aberto, fecha; se estiver fechado, abre
                 togglePopover(lesson.id);
               }}
               type="button"
