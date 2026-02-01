@@ -102,23 +102,39 @@ export const LessonPopover = ({
               </button>
             </PopoverAnchor>
             <PopoverContent
-              className="w-[130px] cursor-pointer text-center bg-[#121214] rounded-full border-2 border-[#25252A] shadow-lg px-4 py-3 hover:bg-[#25252A] touch-manipulation"
+              className="!bg-[#121214] rounded-full"
               side="top"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowContinue(false);
-                togglePopover(lesson.id);
-              }}
-              onTouchEnd={(e) => {
-                e.stopPropagation();
-                setShowContinue(false);
-                togglePopover(lesson.id);
-              }}
+              asChild
             >
-              <div className="flex flex-col items-center justify-center">
-                <span className="text-white text-sm font-semibold leading-tight">Começar</span>
-              </div>
-              <PopoverArrow className="fill-[#25252A] w-4 h-4" />
+              <motion.div
+                className="w-[130px] cursor-pointer text-center bg-[#121214] rounded-full border-2 border-[#25252A] shadow-lg px-4 py-3 hover:bg-[#25252A] touch-manipulation"
+                style={{
+                  backgroundColor: '#121214',
+                  transformOrigin: 'center center'
+                }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{
+                  duration: 0.3,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowContinue(false);
+                  togglePopover(lesson.id);
+                }}
+                onTouchEnd={(e) => {
+                  e.stopPropagation();
+                  setShowContinue(false);
+                  togglePopover(lesson.id);
+                }}
+              >
+                <div className="flex flex-col items-center justify-center">
+                  <span className="text-white text-sm font-semibold leading-tight">Começar</span>
+                </div>
+                <PopoverArrow className="fill-[#25252A] w-4 h-4" />
+              </motion.div>
             </PopoverContent>
           </Popover>
         </div>
@@ -156,12 +172,15 @@ export const LessonPopover = ({
           >
             <motion.div
               className="w-[295px] bg-[#1a1a1e] rounded-[20px] border border-[#25252A] shadow-lg p-4 z-50 outline-none text-white"
-              style={{ backgroundColor: '#1a1a1e' }}
-              initial={{ opacity: 0, scale: 0.96, y: -8 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: -8 }}
+              style={{
+                backgroundColor: '#1a1a1e',
+                transformOrigin: 'center center'
+              }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
               transition={{
-                duration: 0.25,
+                duration: 0.3,
                 ease: [0.16, 1, 0.3, 1]
               }}
             >
