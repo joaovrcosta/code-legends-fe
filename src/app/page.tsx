@@ -1,11 +1,11 @@
 import { listCourses } from "@/actions/course";
 import { CurrentCourseCard } from "@/components/home/current-course-card";
 import { CategoriesCarousel } from "@/components/learn/catolog/categories-carousel";
-import { RecommendationsCarousel } from "@/components/learn/catolog/recommendations-carousel";
 import { NewsBannerCarousel } from "@/components/home/news-banner-carousel";
 import type { Metadata } from "next";
 import { UserProfiler } from "@/components/home/user-profiler";
 import { CurrentCourses } from "@/components/home/current-courses";
+import { RecommendationsCarousel } from "@/components/home/recommendations-carousel";
 
 export const metadata: Metadata = {
   title: "Início - Code Legends",
@@ -37,7 +37,7 @@ export default async function Home() {
             </div>
 
             {/* UserProfiler - Mobile: aparece aqui, Desktop: hidden */}
-            <div className="lg:hidden w-full pr-6 mt-6">
+            <div className="lg:hidden w-full pr-6 lg:mt-6 mt-12">
               <UserProfiler />
             </div>
 

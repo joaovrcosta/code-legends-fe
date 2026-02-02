@@ -94,7 +94,7 @@ export function KeepLearningCard({ course, glowColor = "blue", progress }: KeepL
 
     return (
         <div
-            className="max-w-[300px] cursor-pointer"
+            className="cursor-pointer"
             onClick={handleClick}
         >
             <div className={`flex items-center gap-4 px-4 py-2 bg-[#151517] rounded-[20px] border border-[#25252A] transition-opacity ${isLoading ? "opacity-50" : ""}`}>
