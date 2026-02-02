@@ -62,8 +62,10 @@ export async function UserProfiler() {
                             </p>
                         </div>
                     </div>
-                    <div className="mt-6 flex items-center justify-center">
-                        <ActivityCalendar />
+                    <div className="mt-6 w-full overflow-x-auto scrollbar-hide py-2">
+                        <div className="min-w-fit flex justify-center">
+                            <ActivityCalendar />
+                        </div>
                     </div>
                     <div className="mt-6">
                         <Link
