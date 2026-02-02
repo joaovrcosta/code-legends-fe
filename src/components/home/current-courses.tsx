@@ -9,7 +9,12 @@ import {
 export async function CurrentCourses() {
     const { userCourses } = await getUserEnrolledList();
 
-    if (userCourses.length === 0) return null;
+    // Filtra apenas cursos com progresso > 0
+    const coursesWithProgress = userCourses.filter(
+        (course) => course.progress > 0
+    );
+
+    if (coursesWithProgress.length === 0) return null;
 
     const glowColors: Array<"blue" | "purple" | "orange" | "green"> = ["blue", "purple"];
 
@@ -29,7 +34,7 @@ export async function CurrentCourses() {
                 className="w-full"
             >
                 <CarouselContent className="-ml-4">
-                    {userCourses.map((course, index) => (
+                    {coursesWithProgress.map((course, index) => (
                         <CarouselItem
                             key={course.id}
                             className="pl-4 basis-[256px] md:basis-[316px]"

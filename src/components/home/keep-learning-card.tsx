@@ -114,7 +114,7 @@ export function KeepLearningCard({ course, glowColor = "blue", progress }: KeepL
                     <p className="text-[#C2C2C2] text-[10px] font-light uppercase mb-1">
                         CURSO
                     </p>
-                    <h3 className={`font-semibold text-base truncate ${textColors[glowColor]}`}>
+                    <h3 className={`font-semibold text-base truncate text-white`}>
                         {course.course.title}
                     </h3>
                 </div>
@@ -132,7 +132,7 @@ export function KeepLearningCard({ course, glowColor = "blue", progress }: KeepL
             <div className="mt-4 w-full flex items-center justify-center">
                 <Progress
                     value={progressValue}
-                    className="h-[4px] bg-[#25252A] max-w-[164px]"
+                    className="h-[2px] bg-[#25252A] max-w-[164px]"
                 />
             </div>
         </div>
