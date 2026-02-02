@@ -46,10 +46,19 @@ export default async function Home() {
                 <UserProfiler />
               </div>
 
+              <div className="mb-8">
+                <div className="flex items-center space-x-2 py-4 pt-8">
+                  <span className="text-muted-foreground text-[14px] font-semibold">
+                    Em alta
+                  </span>
+                </div>
+                <RecommendationsCarousel courses={courses.courses} />
+              </div>
+
 
               {/* Catálogo */}
               <div className="mb-8">
-                <div className="flex items-center space-x-2 py-4 pt-8">
+                <div className="flex items-center space-x-2 py-4 pt-0">
                   <span className="text-muted-foreground text-[14px] font-semibold">
                     Recomendações
                   </span>

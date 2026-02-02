@@ -3,106 +3,44 @@
 import { useEffect, useMemo, useState } from "react";
 
 interface ActivityData {
-    date: string; // formato YYYY-MM-DD
-    count: number; // número de atividades no dia (0-4 para diferentes intensidades)
+    date: string;
+    count: number;
 }
 
 interface ActivityCalendarProps {
     activities?: ActivityData[];
 }
 
-// Função para gerar dados de exemplo se não fornecidos
-// Usa um seed fixo para garantir consistência entre servidor e cliente
-function generateSampleData(seed: number = 12345): ActivityData[] {
-    const activities: ActivityData[] = [];
+const generateMockActivities = (): ActivityData[] => {
+    const data: ActivityData[] = [];
     const today = new Date();
 
-    // Função de random com seed para garantir consistência
-    let currentSeed = seed;
-    function seededRandom() {
-        currentSeed = (currentSeed * 9301 + 49297) % 233280;
-        return currentSeed / 233280;
-    }
+    for (let i = 0; i < 130; i++) {
+        const date = new Date();
+        date.setDate(today.getDate() - i);
+        const dateStr = date.toISOString().split("T")[0];
 
-    // Gera dados para os últimos 3 meses
-    for (let i = 90; i >= 0; i--) {
-        const date = new Date(today);
-        date.setDate(date.getDate() - i);
+        const dayOfWeek = date.getDay();
+        const random = Math.random();
 
-        // Simula atividade aleatória (30% de chance de ter atividade)
-        if (seededRandom() > 0.7) {
-            activities.push({
-                date: date.toISOString().split("T")[0],
-                count: Math.floor(seededRandom() * 4) + 1, // 1-4 atividades
-            });
+        let count = 0;
+        if (dayOfWeek !== 0 && dayOfWeek !== 6 && random > 0.4) {
+            count = Math.floor(Math.random() * 5);
+        } else if (random > 0.8) {
+            count = 1;
         }
+
+        data.push({ date: dateStr, count });
     }
+    return data;
+};
 
-    return activities;
-}
-
-// Função para obter a cor baseada na intensidade
 function getActivityColor(count: number): string {
-    if (count === 0) return "bg-[#25252A]"; // Sem atividade
-    if (count === 1) return "bg-[#003D4F]"; // Pouca atividade (azul muito escuro)
-    if (count === 2) return "bg-[#004E63]"; // Média atividade (azul escuro)
-    if (count === 3) return "bg-[#006D8F]"; // Boa atividade (azul médio)
-    return "bg-[#00C8FF]"; // Muita atividade (ciano brilhante)
-}
-
-// // Função para agrupar atividades por mês
-// function groupByMonth(activities: ActivityData[]) {
-//     const grouped: { [key: string]: ActivityData[] } = {};
-
-//     activities.forEach((activity) => {
-//         const date = new Date(activity.date);
-//         const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-
-//         if (!grouped[monthKey]) {
-//             grouped[monthKey] = [];
-//         }
-//         grouped[monthKey].push(activity);
-//     });
-
-//     return grouped;
-// }
-
-// Função para gerar grid de um mês (5 colunas x 7 linhas = 35 células)
-function generateMonthGrid(year: number, month: number, activities: ActivityData[]) {
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    const startDayOfWeek = firstDay.getDay(); // 0 = domingo, 6 = sábado
-
-    // Cria um mapa de atividades por data
-    const activityMap = new Map<string, number>();
-    activities.forEach((activity) => {
-        const activityDate = new Date(activity.date);
-        if (activityDate.getFullYear() === year && activityDate.getMonth() === month) {
-            activityMap.set(activity.date, activity.count);
-        }
-    });
-
-    const grid: Array<{ date: number | null; count: number }> = [];
-
-    // Preenche células vazias antes do primeiro dia do mês
-    for (let i = 0; i < startDayOfWeek; i++) {
-        grid.push({ date: null, count: 0 });
-    }
-
-    // Preenche os dias do mês
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-        const count = activityMap.get(dateStr) || 0;
-        grid.push({ date: day, count });
-    }
-
-    // Preenche células vazias após o último dia do mês para completar 35 células
-    while (grid.length < 35) {
-        grid.push({ date: null, count: 0 });
-    }
-
-    return grid;
+    if (count === 0) return "bg-[#212124]";
+    if (count === 1) return "bg-[#004B63]";
+    if (count === 2) return "bg-[#007EA3]";
+    if (count === 3) return "bg-[#00B4D8]";
+    return "bg-[#00C8FF]";
 }
 
 export function ActivityCalendar({ activities }: ActivityCalendarProps) {
@@ -113,126 +51,96 @@ export function ActivityCalendar({ activities }: ActivityCalendarProps) {
     }, []);
 
     const activityData = useMemo(() => {
-        if (activities) {
-            return activities;
-        }
-        // Usa seed fixo para garantir consistência entre servidor e cliente
-        return generateSampleData(12345);
+        return activities && activities.length > 0 ? activities : generateMockActivities();
     }, [activities]);
 
-    // Obtém os últimos 3 meses
-    const months = useMemo(() => {
-        const today = new Date();
-        const monthsList: Array<{ year: number; month: number; monthName: string; key: string }> = [];
-        const seenKeys = new Set<string>();
+    const activityGrid = useMemo(() => {
+        const days = [];
+        const dataMap = new Map(activityData.map((a) => [a.date, a.count]));
 
-        for (let i = 2; i >= 0; i--) {
-            const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
-            const year = date.getFullYear();
-            const month = date.getMonth();
-            const monthKey = `${year}-${String(month + 1).padStart(2, "0")}`;
+        for (let i = 118; i >= 0; i--) {
+            const date = new Date();
+            date.setDate(new Date().getDate() - i);
+            const dateStr = date.toISOString().split("T")[0];
 
-            // Garante que não há duplicatas
-            if (!seenKeys.has(monthKey)) {
-                seenKeys.add(monthKey);
-                monthsList.push({
-                    year,
-                    month,
-                    monthName: date.toLocaleDateString("pt-BR", { month: "short" }),
-                    key: monthKey,
-                });
-            }
+            days.push({
+                date: dateStr,
+                count: dataMap.get(dateStr) ?? 0,
+                month: date.toLocaleDateString("pt-BR", { month: "short" }).toUpperCase().replace(".", ""),
+                isFirstDayOfMonth: date.getDate() === 1
+            });
         }
+        return days;
+    }, [activityData]);
 
-        return monthsList;
-    }, []);
+    const weeks = useMemo(() => {
+        const cols = [];
+        for (let i = 0; i < activityGrid.length; i += 7) {
+            cols.push(activityGrid.slice(i, i + 7));
+        }
+        return cols;
+    }, [activityGrid]);
 
-    // Renderiza placeholder no servidor para evitar hydration mismatch
-    if (!isMounted) {
-        return (
-            <div className="space-y-4 max-w-[300px]">
-                <div className="flex gap-4 justify-between">
-                    {months.map(({ year, month, monthName, key }) => (
-                        <div key={key} className="flex flex-col flex-1">
-                            <h3 className="text-white text-sm font-medium mb-2 capitalize">
-                                {monthName}
-                            </h3>
-                            <div className="grid grid-cols-5 gap-1">
-                                {Array.from({ length: 35 }).map((_, index) => (
+    if (!isMounted) return <div className="h-[160px] w-full bg-[#1a1a1e]/50 rounded-xl animate-pulse" />;
+
+    return (
+        <div className="w-full overflow-hidden font-sans select-none">
+            <div className="flex flex-col gap-3">
+
+                <div className="flex text-[10px] font-bold text-[#737373] h-4 ml-8 mb-1">
+                    {weeks.map((week, i) => {
+                        if (i === 0 || week.some(d => d.isFirstDayOfMonth)) {
+                            const monthLabel = week.find(d => d.isFirstDayOfMonth)?.month || week[0].month;
+                            return (
+                                <div key={i} className="relative w-full">
+                                    <span className="absolute left-0 whitespace-nowrap">{monthLabel}</span>
+                                </div>
+                            );
+                        }
+                        return <div key={i} className="w-full" />;
+                    })}
+                </div>
+
+                <div className="flex gap-2">
+                    <div className="flex flex-col justify-between text-[10px] font-medium text-[#525252] py-1 h-[105px] sm:h-[135px]">
+                        <span>Seg</span>
+                        <span>Qua</span>
+                        <span>Sex</span>
+                    </div>
+
+                    <div className="flex-1 flex gap-[4px] sm:gap-[6px] overflow-visible">
+                        {weeks.map((week, weekIndex) => (
+                            <div key={weekIndex} className="flex flex-col gap-[4px] sm:gap-[6px]">
+                                {week.map((day) => (
                                     <div
-                                        key={index}
-                                        className="w-3 h-3 rounded-sm bg-[#25252A]"
+                                        key={day.date}
+                                        className={`
+                      w-[12px] h-[12px] 
+                      sm:w-[16px] sm:h-[15px] 
+                      rounded-[3px] transition-all duration-300
+                      ${getActivityColor(day.count)}
+                      hover:ring-1 hover:ring-white/40 cursor-pointer
+                    `}
+                                        title={`${day.date}: ${day.count} aulas`}
                                     />
                                 ))}
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
 
-                {/* Legenda */}
-                <div className="flex items-center gap-2 text-xs text-[#C4C4CC]">
+                <div className="flex items-center justify-center sm:justify-end mt-4 gap-2 text-[10px] text-[#525252]">
                     <span>Menos</span>
-                    <div className="flex gap-1">
-                        <div className="w-3 h-3 rounded-sm bg-[#25252A]" />
-                        <div className="w-3 h-3 rounded-sm bg-[#003D4F]" />
-                        <div className="w-3 h-3 rounded-sm bg-[#004E63]" />
-                        <div className="w-3 h-3 rounded-sm bg-[#006D8F]" />
-                        <div className="w-3 h-3 rounded-sm bg-[#00C8FF]" />
+                    <div className="flex gap-[4px]">
+                        {[0, 1, 2, 3, 4].map((lvl) => (
+                            <div
+                                key={lvl}
+                                className={`w-[11px] h-[11px] rounded-[2px] ${getActivityColor(lvl)}`}
+                            />
+                        ))}
                     </div>
                     <span>Mais</span>
                 </div>
-            </div>
-        );
-    }
-
-    return (
-        <div className="space-y-4 max-w-[300px]">
-            <div className="flex gap-4 justify-between">
-                {months.map(({ year, month, monthName, key }) => {
-                    const monthActivities = activityData.filter((activity) => {
-                        const activityDate = new Date(activity.date);
-                        return (
-                            activityDate.getFullYear() === year &&
-                            activityDate.getMonth() === month
-                        );
-                    });
-
-                    const grid = generateMonthGrid(year, month, monthActivities);
-
-                    return (
-                        <div key={key} className="flex flex-col flex-1">
-                            <h3 className="text-white text-sm font-medium mb-2 capitalize">
-                                {monthName}
-                            </h3>
-                            <div className="grid grid-cols-5 gap-1">
-                                {grid.map((cell, index) => (
-                                    <div
-                                        key={index}
-                                        className={`w-3 h-3 rounded-sm ${getActivityColor(cell.count)}`}
-                                        title={
-                                            cell.date
-                                                ? `${cell.date}/${month + 1}/${year}: ${cell.count} atividades`
-                                                : undefined
-                                        }
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-
-            {/* Legenda */}
-            <div className="flex items-center gap-2 text-xs text-[#C4C4CC]">
-                <span>Menos</span>
-                <div className="flex gap-1">
-                    <div className="w-3 h-3 rounded-sm bg-[#25252A]" />
-                    <div className="w-3 h-3 rounded-sm bg-[#003D4F]" />
-                    <div className="w-3 h-3 rounded-sm bg-[#004E63]" />
-                    <div className="w-3 h-3 rounded-sm bg-[#006D8F]" />
-                    <div className="w-3 h-3 rounded-sm bg-[#00C8FF]" />
-                </div>
-                <span>Mais</span>
             </div>
         </div>
     );
