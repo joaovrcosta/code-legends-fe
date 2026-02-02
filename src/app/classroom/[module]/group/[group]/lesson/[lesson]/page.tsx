@@ -20,7 +20,7 @@ import { generateLessonUrl, findLessonContext } from "@/utils/lesson-url";
 export default function DynamicLessonPage() {
   const params = useParams();
   const router = useRouter();
-  const { activeCourse } = useActiveCourseStore();
+  const { activeCourse, fetchActiveCourse } = useActiveCourseStore();
   const { setLessonForPage, lessonCompletedTimestamp, currentLesson } = useCourseModalStore();
   const { isOpen: isSidebarOpen } = useClassroomSidebarStore();
 
@@ -43,7 +43,86 @@ export default function DynamicLessonPage() {
   // Carrega a aula específica
   useEffect(() => {
     const loadLesson = async () => {
-      if (!activeCourse?.id || !lessonSlug) {
+      // Se não há activeCourse, tenta buscar
+      if (!activeCourse?.id) {
+        await fetchActiveCourse();
+        // Aguarda um pouco para a store ser atualizada e o componente re-renderizar
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        // Verifica novamente após atualizar (usa getState para pegar o valor mais recente)
+        const updatedActiveCourse = useActiveCourseStore.getState().activeCourse;
+        if (!updatedActiveCourse?.id || !lessonSlug) {
+          setIsLoading(false);
+          return;
+        }
+        // Usa o activeCourse atualizado
+        const courseId = updatedActiveCourse.id;
+        setIsLoading(true);
+        setError(null);
+
+        try {
+          const data = await getLessonBySlug(courseId, lessonSlug);
+          if (data) {
+            // VALIDAÇÃO: Se a aula estiver bloqueada, redireciona para a primeira desbloqueada
+            if (data.status === "locked") {
+              // Carrega o roadmap para encontrar a primeira aula desbloqueada
+              const roadmapData = await getCourseRoadmapFresh(courseId);
+              if (roadmapData) {
+                setRoadmap(roadmapData);
+                
+                // Encontra a primeira aula desbloqueada
+                const allLessons = roadmapData.modules
+                  .flatMap((module) => module?.groups || [])
+                  .flatMap((group) => group?.lessons || []);
+                
+                const firstUnlockedLesson = allLessons.find(
+                  (lesson) => lesson.status !== "locked"
+                );
+                
+                if (firstUnlockedLesson) {
+                  // Encontra o contexto da aula
+                  const context = findLessonContext(
+                    firstUnlockedLesson.id,
+                    roadmapData.modules
+                  );
+                  
+                  if (context) {
+                    const url = generateLessonUrl(
+                      firstUnlockedLesson,
+                      context.module,
+                      context.group
+                    );
+                    router.replace(url); // Usa replace para não adicionar ao histórico
+                    return;
+                  }
+                }
+              }
+              
+              // Se não encontrou aula desbloqueada, redireciona para /classroom
+              router.replace("/classroom");
+              return;
+            }
+            
+            setLessonData(data);
+            
+            // Atualiza o store com a lição atual, incluindo o status do nível raiz
+            const lessonWithStatus = {
+              ...data.lesson,
+              status: data.status, // Usa o status do nível raiz da resposta
+            };
+            setLessonForPage(lessonWithStatus);
+          } else {
+            setError("Aula não encontrada");
+          }
+        } catch (err) {
+          console.error("Erro ao carregar aula:", err);
+          setError("Erro ao carregar aula");
+        } finally {
+          setIsLoading(false);
+        }
+        return;
+      }
+      
+      if (!lessonSlug) {
         setIsLoading(false);
         return;
       }
@@ -114,7 +193,7 @@ export default function DynamicLessonPage() {
     };
 
     loadLesson();
-  }, [activeCourse?.id, lessonSlug, setLessonForPage, router]);
+  }, [activeCourse?.id, lessonSlug, setLessonForPage, router, fetchActiveCourse]);
 
   // Carrega o roadmap para a sidebar
   useEffect(() => {

@@ -27,7 +27,7 @@ export default function ClassroomPage() {
     setModuleUnlockedTimestamp,
   } = useCourseModalStore();
 
-  const { activeCourse } = useActiveCourseStore();
+  const { activeCourse, fetchActiveCourse } = useActiveCourseStore();
   const { isOpen: isSidebarOpen } = useClassroomSidebarStore();
   const [roadmap, setRoadmap] = useState<RoadmapResponse | null>(null);
   const [isUnlocking, setIsUnlocking] = useState(false);
@@ -45,7 +45,71 @@ export default function ClassroomPage() {
   // Carrega as aulas quando a página é montada e redireciona para URL dinâmica
   useEffect(() => {
     const loadLessons = async () => {
-      if (!activeCourse?.id || lessons.length > 0) return;
+      // Se não há activeCourse, tenta buscar
+      if (!activeCourse?.id) {
+        await fetchActiveCourse();
+        // Aguarda um pouco para a store ser atualizada
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        // Verifica novamente após atualizar
+        const updatedActiveCourse = useActiveCourseStore.getState().activeCourse;
+        if (!updatedActiveCourse?.id || lessons.length > 0) return;
+        
+        // Usa o activeCourse atualizado
+        const courseId = updatedActiveCourse.id;
+        try {
+          const roadmapData = await getCourseRoadmapFresh(courseId);
+          if (roadmapData) {
+            setRoadmap(roadmapData);
+
+            // Coleta todas as aulas do roadmap
+            const allLessons = roadmapData.modules
+              .flatMap((module) => module?.groups || [])
+              .flatMap((group) => group?.lessons || []);
+
+            // Encontra a aula atual (isCurrent) ou a primeira desbloqueada
+            // IMPORTANTE: Só usa a aula atual se ela não estiver bloqueada
+            let targetLesson: Lesson | null = null;
+            const foundCurrentLesson = allLessons.find((lesson) => lesson.isCurrent);
+            
+            // Só usa a aula atual se ela não estiver bloqueada
+            if (foundCurrentLesson && foundCurrentLesson.status !== "locked") {
+              targetLesson = foundCurrentLesson;
+            } else {
+              // Procura a primeira aula desbloqueada
+              targetLesson =
+                allLessons.find((lesson) => lesson.status !== "locked") || null;
+            }
+
+            if (targetLesson) {
+              // Encontra o contexto da aula e redireciona para URL dinâmica
+              const context = findLessonContext(
+                targetLesson.id,
+                roadmapData.modules
+              );
+              if (context) {
+                const url = generateLessonUrl(
+                  targetLesson,
+                  context.module,
+                  context.group
+                );
+                router.push(url);
+                return;
+              }
+            }
+
+            // Fallback: usa a store se não conseguir gerar URL
+            const startIndex = targetLesson
+              ? allLessons.findIndex((lesson) => lesson.id === targetLesson.id)
+              : 0;
+            setLessonsForPage(allLessons, startIndex >= 0 ? startIndex : 0);
+          }
+        } catch (error) {
+          console.error("Erro ao carregar aulas:", error);
+        }
+        return;
+      }
+      
+      if (lessons.length > 0) return;
 
       try {
         const roadmapData = await getCourseRoadmapFresh(activeCourse.id);
