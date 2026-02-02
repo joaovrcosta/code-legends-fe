@@ -59,7 +59,6 @@ export function RecommendationsCarousel({
                                 isCurrent={false}
                                 tags={course.tags}
                                 courseId={course.id}
-                                isEnrolled={course.isEnrolled}
                                 level={course.level}
                             />
                         </CarouselItem>

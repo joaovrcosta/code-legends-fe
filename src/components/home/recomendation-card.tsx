@@ -22,12 +22,18 @@ function EnrollButton({
     onEnrollSuccess?: () => void;
 }) {
     const [isLoading, setIsLoading] = useState(false);
+    const userCourses = useEnrolledCoursesStore((state) => state.userCourses);
     const refreshEnrolledCourses = useEnrolledCoursesStore(
         (state) => state.refreshEnrolledCourses
     );
 
+    // Verifica se o curso está inscrito usando o store
+    const isEnrolled = courseId
+        ? userCourses.some((course) => course.courseId === courseId)
+        : false;
+
     const handleEnroll = async () => {
-        if (!courseId || isLoading) return;
+        if (!courseId || isLoading || isEnrolled) return;
 
         try {
             setIsLoading(true);
@@ -45,6 +51,18 @@ function EnrollButton({
             setIsLoading(false);
         }
     };
+
+    // Se já está inscrito, mostra o check
+    if (isEnrolled) {
+        return (
+            <div className="flex items-center justify-center w-8 h-8 rounded-full cursor-pointer hover:text-[#35BED5]">
+                <Check
+                    size={20}
+                    className="text-green-500 hover:text-[#35BED5]"
+                />
+            </div>
+        );
+    }
 
     return (
         <button
@@ -125,7 +143,6 @@ interface RecomendationCardProps {
     status?: "in-progress" | "completed" | "not-started" | "career" | "continue";
     tags?: string[];
     courseId?: string;
-    isEnrolled?: boolean;
     onEnrollSuccess?: () => void;
     level?: "beginner" | "intermediate" | "advanced";
 }
@@ -139,7 +156,6 @@ export function RecomendationCard({
     isCurrent,
     courseId,
     onEnrollSuccess,
-    isEnrolled,
     level,
 }: RecomendationCardProps) {
     const imageSrc = image || reactIcon;
@@ -203,19 +219,10 @@ export function RecomendationCard({
                         </Link>
                     </div>
 
-                    {isEnrolled ? (
-                        <div className="flex items-center justify-center w-8 h-8 rounded-full cursor-pointer hover:text-[#35BED5]">
-                            <Check
-                                size={20}
-                                className="text-green-500 hover:text-[#35BED5]"
-                            />
-                        </div>
-                    ) : (
-                        <EnrollButton
-                            courseId={courseId}
-                            onEnrollSuccess={onEnrollSuccess}
-                        />
-                    )}
+                    <EnrollButton
+                        courseId={courseId}
+                        onEnrollSuccess={onEnrollSuccess}
+                    />
                 </div>
             </div>
         </div>

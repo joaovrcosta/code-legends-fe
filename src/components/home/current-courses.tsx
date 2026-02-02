@@ -19,12 +19,6 @@ export async function CurrentCourses() {
                 Continuar aprendendo
             </h2>
 
-            {/* FADE NA DIREITA:
-                1. absolute right-0: Fixa na extremidade direita.
-                2. bg-gradient-to-l: Gradiente da direita (cor sólida) para a esquerda (transparente).
-                3. pointer-events-none: Permite clicar nos botões ou cards por baixo do fade.
-                4. z-10: Garante que fique acima dos cards.
-            */}
             <div className="pointer-events-none absolute right-0 top-10 h-[calc(100%-40px)] w-20 bg-gradient-to-l from-[#121214] via-[#121214]/80 to-transparent z-10" />
 
             <Carousel
