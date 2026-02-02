@@ -23,12 +23,12 @@ export default async function Home() {
   return (
     <HomePageWrapper initialUserCourses={enrolledCoursesData.userCourses || []}>
       <div className="w-full lg:p-6 pt-6 pl-6 pr-0 pb-6">
-        <div className="flex flex-col lg:flex-row max-w-[1520px] lg:p-6 p-0 pb-10 gap-8 md:gap-10 mx-auto">
+        <div className="flex flex-col lg:flex-row max-w-[1520px] pb-10 gap-8 md:gap-10 mx-auto">
           {/* Conteúdo principal - Esquerda */}
           <div className="flex-1 flex flex-col items-start min-w-0">
             {/* Seus cursos e Catálogo */}
             <div className="w-full">
-              <div className="flex items-center space-x-2 pb-4 lg:pt-8 pt-0">
+              <div className="flex items-center space-x-2 pb-4 pt-0">
                 <span className="text-muted-foreground text-[14px] font-semibold">
                   Trilha atual
                 </span>

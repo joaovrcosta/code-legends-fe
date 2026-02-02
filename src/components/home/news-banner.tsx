@@ -32,7 +32,7 @@ export function NewsBanner() {
                             </div>
                         </div>
 
-                        <h3 className="text-[20px] lg:text-[22px] mb-1 font-bold text-white">
+                        <h3 className="text-[20px] lg:text-[22px] mb-1 font-semibold text-white">
                             Bom dia, dev!
                         </h3>
 
@@ -58,7 +58,7 @@ export function NewsBanner() {
                         </div>
 
                         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                            <Button className="bg-blue-gradient-500 text-white h-[40px] lg:h-[44px] rounded-full hover:opacity-90 border border-[#25252A] flex-1 sm:flex-none px-6 font-bold text-sm">
+                            <Button className="bg-blue-gradient-500 text-white h-[40px] lg:h-[44px] rounded-full hover:opacity-90 border border-[#25252A] flex-1 sm:flex-none px-6 font-medium text-sm">
                                 <TicketIcon size={18} weight="fill" className="mr-2" />
                                 Retirar meu ingresso
                             </Button>

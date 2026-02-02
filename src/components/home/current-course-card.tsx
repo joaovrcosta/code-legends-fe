@@ -2,7 +2,7 @@ import { getActiveCourse } from "@/actions/user/get-active-course";
 import Image from "next/image";
 import Link from "next/link";
 import { Progress } from "../ui/progress";
-import { BarbellIcon } from "@phosphor-icons/react/dist/ssr";
+import { BarbellIcon, Trophy } from "@phosphor-icons/react/dist/ssr";
 import { ContinueCourseButton } from "./continue-course-button";
 import { getUserCourseProgress } from "@/actions/progress";
 
@@ -44,7 +44,7 @@ export async function CurrentCourseCard() {
                         <p className="text-sm text-center">
                             {Math.round(userProgress?.course.progress ?? 0)}%
                         </p>
-                        {/* <Trophy size={32} weight="fill" className="text-[#25252A]" /> */}
+                        <Trophy size={32} weight="fill" className="text-[#25252A]" />
                     </div>
                     <div className="lg:block hidden mt-4">
                         <button
@@ -71,7 +71,7 @@ export async function CurrentCourseCard() {
 
             </div>
             <div className="pt-4 flex items-center lg:justify-start justify-center">
-                <p className="text-[#737373] text-sm text-center">
+                <p className="text-[#737373] text-xs text-center">
                     Parte da jornada front-end{" "}
                     <Link
                         href={`/learn`}
